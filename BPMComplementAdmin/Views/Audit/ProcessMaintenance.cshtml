@@ -1,0 +1,153 @@
+﻿@using Ultimus.ComponentManager.Models;
+@model Ultimus.ComponentManager.Models.CatProcesses
+
+@{
+    ViewBag.Title = "Mantenimiento de Procesos";
+    var _CatProcessesList = ViewBag.CatProcessesList as IEnumerable<CatProcesses>;    
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped table-hover">
+            <tr>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.IdProcess)
+                </th>*@
+                <th>
+                    Nombre del Proceso
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.RootLocation)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.ProcessVersion)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in _CatProcessesList)
+            {
+                <tr @((int)ViewBag.lastAdded == item.IdProcess ? "class=success" : "")@((int)ViewBag.ProcessToUpdateId == item.IdProcess ? "class=danger" : "")>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.IdProcess)
+                    </td>*@
+                    <td>
+                        @if ((int)ViewBag.lastAdded == item.IdProcess)
+                        {
+                            <i class="fa fa-info-circle"></i>
+                        }
+                        @if ((int)ViewBag.ProcessToUpdateId == item.IdProcess)
+                        {
+                            <i class="fa fa-info-circle"></i>
+                        }
+                        @Html.DisplayFor(modelItem => item.ProcessName)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.RootLocation)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProcessVersion)
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="btn-group" style="text-align: left;">
+                            <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i>&nbsp;Action&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="@Url.Action("UpdateProcessMaintenance", "Audit", new { id = item.IdProcess })" onclick="LoadMessage();">
+                                    <i class="fa fa-pencil-square-o"></i>&nbsp;Update</a></li>
+
+                                <li><a href="@Url.Action("DeleteProcess", "Audit", new { id = item.IdProcess })"
+                                    data-confirm="Warning! Are you sure you want to delete this?">
+                                    <i class="fa fa-eraser"></i>&nbsp;Delete</a></li>
+                            </ul>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Proceso</h3>
+            </div>
+            <div class="panel-body">
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.IdProcess)
+
+            
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProcessName)
+                        @if ((int)ViewBag.ProcessToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.ProcessName, new { @class = "form-control", @placeholder = "Process Name" })
+                        @Html.ValidationMessageFor(model => model.ProcessName, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RootLocation)
+                        @if ((int)ViewBag.ProcessToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.RootLocation, new { @class = "form-control", @placeholder = "Root Location" })
+                        @Html.ValidationMessageFor(model => model.RootLocation, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProcessVersion)
+                        @if ((int)ViewBag.ProcessToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.ProcessVersion, new { @class = "form-control", @placeholder = "Process Version" })
+                        @Html.ValidationMessageFor(model => model.ProcessVersion, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <input type="submit" value="Save" class="btn btn-success" />
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@if ((int)ViewBag.lastAdded != -1)
+{    
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+@if ((string)ViewBag.DeleteProcessStatus == "success")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was deleted Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+else if ((string)ViewBag.DeleteProcessStatus == "error")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.warning('The Process cannot be deleted because have steps associated.', 'Warning!');
+            });
+        </script>
+    }      
+}

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPMComplementAdmin", "BPMComplementAdmin\BPMComplementAdmin.csproj", "{9AA901C0-FCD9-4835-AA26-E1F443B8B114}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPMComplementModels", "BPMComplementModels\BPMComplementModels.csproj", "{C8FFDEA9-250F-4357-860A-58EF37949FAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiConectores", "ApiConectores\ApiConectores.csproj", "{63D8FA41-B87F-40DA-9723-BEB5EB6ED1BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APILogInBPMComplement", "APILogInBPMComplement\APILogInBPMComplement.csproj", "{30CB06A1-6E1D-4D85-836C-6F4B4EBF193D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AA901C0-FCD9-4835-AA26-E1F443B8B114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA901C0-FCD9-4835-AA26-E1F443B8B114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA901C0-FCD9-4835-AA26-E1F443B8B114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA901C0-FCD9-4835-AA26-E1F443B8B114}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8FFDEA9-250F-4357-860A-58EF37949FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8FFDEA9-250F-4357-860A-58EF37949FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8FFDEA9-250F-4357-860A-58EF37949FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8FFDEA9-250F-4357-860A-58EF37949FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63D8FA41-B87F-40DA-9723-BEB5EB6ED1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63D8FA41-B87F-40DA-9723-BEB5EB6ED1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63D8FA41-B87F-40DA-9723-BEB5EB6ED1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63D8FA41-B87F-40DA-9723-BEB5EB6ED1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30CB06A1-6E1D-4D85-836C-6F4B4EBF193D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30CB06A1-6E1D-4D85-836C-6F4B4EBF193D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30CB06A1-6E1D-4D85-836C-6F4B4EBF193D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30CB06A1-6E1D-4D85-836C-6F4B4EBF193D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

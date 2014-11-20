@@ -1,0 +1,139 @@
+﻿@using Ultimus.ComponentManager.Models;
+@model Ultimus.ComponentManager.Models.CatWebAplications
+
+@{
+    ViewBag.Title = "Aplicaciones Web";
+    var WebAplicationsList = ViewBag.WebAplicationsList as IEnumerable<CatWebAplications>;
+}
+
+
+@MyHelpers.Tabs("aplications", Url)
+
+<div class="row">
+    <div class="col-md-8">
+
+        <table class="table table-striped table-hover">
+            <tr>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.IdWebAplication)
+                </th>*@
+
+                <th>
+                    @*@Html.DisplayNameFor(model => model.WebAplicationName)*@
+                    <b>Aplicación</b>
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.WebAplicationPath)*@
+                    <b>Ruta</b>
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in WebAplicationsList)
+            {
+                <tr @(item.isUpdatedOrCreated ? "class=success" : "")@(item.toUpdate ? "class=danger" : "")>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.IdWebAplication)
+                    </td>*@
+
+                    <td>
+                        @if (item.isUpdatedOrCreated || item.toUpdate)
+                        { 
+                            <i class="fa fa-info-circle"></i>
+                        }
+
+                        @Html.DisplayFor(modelItem => item.WebAplicationName)
+                    </td>
+                    <td style="width:50px; overflow:scroll;">
+                        @Html.DisplayFor(modelItem => item.WebAplicationPath)
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="btn-group" style="text-align: left;">
+                            <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i>&nbsp;Acción&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="@Url.Action("UpdateWebAplication", "WebAplication", new { id = item.IdWebAplication })">
+                                    <i class="fa fa-pencil-square-o"></i>&nbsp;Actualizar</a></li>
+                                <li><a href="@Url.Action("DeleteWebAplication", "WebAplication", new { id = item.IdWebAplication })"
+                                    data-confirm="Atencion! ¿Está seguro de querer borrar esto?">
+                                    <i class="fa fa-eraser"></i>&nbsp;Borrar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de Aplicación Web</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("CreateOrUpdateWebAplication", "WebAplication", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(model => model.IdWebAplication)
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.WebAplicationName)*@
+                        <b>Nombre de la Aplicación Web</b>
+                        @Html.TextBoxFor(model => model.WebAplicationName, new { @class = "form-control", @placeholder = "Nombre de la aplicación Web" })
+                        @Html.ValidationMessageFor(model => model.WebAplicationName, null, new { @class = "label label-warning" })
+
+                    </div>
+                    
+                     <div class="form-group">
+                        @*@Html.LabelFor(model => model.WebAplicationPath)*@
+                         <b>Ruta de la aplicación Web</b>
+                        @Html.TextBoxFor(model => model.WebAplicationPath, new { @class = "form-control", @placeholder = "Ruta de la aplicación Web" })
+                        @Html.ValidationMessageFor(model => model.WebAplicationPath, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <input type="submit" value="Grabar" class="btn btn-success" />     
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@if (Model.isUpdatedOrCreated)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+
+@if (Model.isDeleted)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was deleted Correctly', 'Item Deleted!');
+            });
+        </script>
+    }
+}
+
+@if (Model.inUse)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.warning("You can't delete this item because is in use", "This Item is in Use!");
+            });
+        </script>
+    }
+} 

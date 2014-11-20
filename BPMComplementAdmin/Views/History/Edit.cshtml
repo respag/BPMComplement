@@ -1,0 +1,155 @@
+﻿@model Ultimus.ComponentManager.Models.HistoryConfiguration
+
+@{
+    ViewBag.Title = "History configuration";
+}
+
+@MyHelpers.Tabs("history", Url)
+
+<div class="row">
+    <div class="col-md-8">
+
+        @if ((ViewBag.SaveChanges != null) && (ViewBag.SaveChanges))
+        {
+            <div class="alert alert-success">
+                <strong>The changes was saved correctly.</strong>
+            </div>
+        }
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.IdConfiguration)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CompletedTaskDeleted)
+                @Html.CheckBoxFor(model => model.CompletedTaskDeleted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.CompletedTaskDeleted, null, new { @class = "label label-warning" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IncidentAborted)
+                @Html.CheckBoxFor(model => model.IncidentAborted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.IncidentAborted, null, new { @class = "label label-warning" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IncidentCompleted)
+                @Html.CheckBoxFor(model => model.IncidentCompleted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.IncidentCompleted, null, new { @class = "label label-warning" })
+            </div>
+
+      
+            <div class="form-group">
+                @Html.LabelFor(model => model.IncidentInitiated)
+                @Html.CheckBoxFor(model => model.IncidentInitiated, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.IncidentInitiated, null, new { @class = "label label-warning" })
+            </div>
+            
+              
+            <div class="form-group">
+                @Html.LabelFor(model => model.StepAborted)
+                @Html.CheckBoxFor(model => model.StepAborted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.StepAborted, null, new { @class = "label label-warning" })
+            </div>
+
+        
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskActivated)
+                @Html.CheckBoxFor(model => model.TaskActivated, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskActivated, null, new { @class = "label label-warning" })
+            </div>
+            
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskAssigned)
+                @Html.CheckBoxFor(model => model.TaskAssigned, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskAssigned, null, new { @class = "label label-warning" })
+            </div>
+
+    
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskCompleted)
+                @Html.CheckBoxFor(model => model.TaskCompleted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskCompleted, null, new { @class = "label label-warning" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskConferred)
+                @Html.CheckBoxFor(model => model.TaskConferred, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskConferred, null, new { @class = "label label-warning" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskDelayed)
+                @Html.CheckBoxFor(model => model.TaskDelayed, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskDelayed, null, new { @class = "label label-warning" })
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskLate)
+                @Html.CheckBoxFor(model => model.TaskLate, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskLate, null, new { @class = "label label-warning" })
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskResubmitted)
+                @Html.CheckBoxFor(model => model.TaskResubmitted, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskResubmitted, null, new { @class = "label label-warning" })
+            </div>
+           
+           
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskReturned)
+                @Html.CheckBoxFor(model => model.TaskReturned, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskReturned, null, new { @class = "label label-warning" })
+            </div>
+            
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskSubmitFailed)
+                @Html.CheckBoxFor(model => model.TaskSubmitFailed, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskSubmitFailed, null, new { @class = "label label-warning" })
+            </div>
+            
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TasksPerDayThresholdReached)
+                @Html.CheckBoxFor(model => model.TasksPerDayThresholdReached, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TasksPerDayThresholdReached, null, new { @class = "label label-warning" })
+            </div>
+         
+            <div class="form-group">
+                @Html.LabelFor(model => model.QueueTaskActivated)
+                @Html.CheckBoxFor(model => model.QueueTaskActivated, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.QueueTaskActivated, null, new { @class = "label label-warning" })
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaskDeletedOnMinResponseComplete)
+                @Html.CheckBoxFor(model => model.TaskDeletedOnMinResponseComplete, new { @class = "form-control", @placeholder = "Connection String", @style = "width:25px;height:25px;text-align:right;" })
+                @Html.ValidationMessageFor(model => model.TaskDeletedOnMinResponseComplete, null, new { @class = "label label-warning" })
+            </div>
+        
+            <p>
+                <input type="submit" value="Save History configuration" class="btn btn-success" />
+                <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("ProcessMaintenance", "FormConfiguration")'">
+                    Cancel
+                </button>
+            </p>
+    
+        }
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ultimus History</h3>
+            </div>
+            <div class="panel-body">
+                Ultimus History manage every event that produce processes published in ultimus BPM server.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,30 @@
+﻿@using Ultimus.AuditManager.Admin.Models
+@model Ultimus.AuditManager.Admin.Models.MessagePanel
+
+<div class="alert alert-@Model.MessageType.ToString() alert-dismissable">
+
+    @if (@Model.isDismissable == true)
+    {
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    }
+
+    @if (Model.MessageType == MessageType.success)
+    {
+        <strong>SUCCESS!</strong>
+    }
+    else if (Model.MessageType == MessageType.warning)
+    {
+        <strong>WARNING!</strong>
+    }
+    else if (Model.MessageType == MessageType.info)
+    {
+        <strong>INFO!</strong>
+    }
+    else if (Model.MessageType == MessageType.danger)
+    {
+        <strong>ERROR!</strong>
+    }
+    @Model.Message
+
+    
+</div>

@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Tabla de Configuración de Auditoría";
+    ViewBag.Aplicacion = System.Configuration.ConfigurationManager.AppSettings["Aplicacion"];
+}
+
+
+@MyHelpers.TabsAudit("index", Url)
+
+<div class="row">
+    <div class="col-md-8">
+        <div id="messageContainer">
+        </div>
+        <div id="toolContainer" style="text-align: right;">
+        </div>
+
+        <div id="content">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de definición de la Tabla</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.ActionLink("Procesos", "ProcessMaintenance", "FormConfiguration", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                    <i class="fa fa-cog"></i>
+                    <select id="selectProcesses" class="form-control">
+                        <option value="-1">SELECCIONE UNA OPCIÓN</option>
+                    </select>
+                    <span class="label label-warning" id="selectProcessesWarning" style="display: none;">Se requiere que elija un Proceso</span>
+                </div>
+
+                <div class="form-group">
+                    @Html.ActionLink("Etapas", "StepMaintenance", "FormConfiguration", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                    <i class="fa fa-cog"></i>
+                    <select id="selectSteps" class="form-control"></select>
+                    <span id="selectStepsWarning" class="label label-warning" style="display: none;">Se requiere que elija una Etapa</span>
+                </div>
+
+                <div class="form-group">
+
+                    @Html.ActionLink("Conector de Origen", "ConnectionConfiguration", "Audit", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                    <i class="fa fa-cog"></i>
+                    <select id="selectConnectionsOrigin" class="form-control"></select>
+                    <span id="selectOriginWarning" class="label label-warning" style="display: none;">El conector de origin es obligatorio</span>
+                </div>
+
+                <div class="form-group">
+                    @Html.ActionLink("Conector de Destino", "ConnectionConfiguration", "Audit", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                    <i class="fa fa-cog"></i>
+                    <select id="selectConnectionsDestination" class="form-control"></select>
+                    <span id="selectDestinationWarning" class="label label-warning" style="display: none;">El conector de destino es obligatorio</span>
+                </div>
+
+                <button type="button" id="btnAddTablesToAudit" class="btn btn-success">Agregar Tablas para Auditar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalColumnConfig" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Agregar columnas para auditar</h4>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button id="btnSaveColumnConfiguration" type="button" class="btn btn-success">Grabar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalTableConfig" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Agregar Tablas para Auditar</h4>
+            </div>
+            <div class="modal-body" id="modalTableBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="btnSaveTableConfiguration" class="btn btn-success">Grabar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script> 
+    var app;
+    $(document).ready(function () {
+        app = '@ViewBag.Aplicacion';
+        if ('@ViewBag.AuditInstalled' === 'False') {
+            $("#audit").addClass("gris");
+            $("#linkAuditoria").addClass("gris");
+            $("#linkAuditoria").click(function(e){
+
+                e.preventDefault();
+            });
+
+        }
+        else
+            onclick="LoadMessage()";
+    });
+
+    if ('@ViewBag.ProcessInstalled' === 'False') {
+        $("#process").addClass("gris");
+        $("#linkProcesos").addClass("gris");
+        $("#linkProcesos").click(function (e) {
+            e.preventDefault();
+            location.href = app + "/audit/Index";
+        });
+
+    }
+    else
+        onclick = "LoadMessage()";
+</script>
+@section scripts{
+
+    @Scripts.Render("~/Scripts/Ultimus-AuditConfiguration")
+
+}

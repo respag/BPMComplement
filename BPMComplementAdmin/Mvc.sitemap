@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="Data Base Configuration" controller="Home" action="DataBaseNotExists" />
+    <mvcSiteMapNode title="Data Base Configuration" controller="Home" action="CreateDataBase" />
+    <mvcSiteMapNode title="Data Base Configuration" controller="Home" action="DoPendingMigrations" />
+    <mvcSiteMapNode title="Data Base Configuration" controller="Home" action="ExecutePendingMigrations" />
+    <mvcSiteMapNode title="Data Base Configuration" controller="Home" action="DataBaseNoPendingMigrations" />
+    <mvcSiteMapNode title="Audit Configuration" controller="Audit" action="Index">
+      <mvcSiteMapNode title="Connections Maintenance" controller="Audit" action="ConnectionConfiguration" />
+      <mvcSiteMapNode title="Connections Maintenance" controller="Audit" action="CreateUpdateConnection" />
+      <mvcSiteMapNode title="Connections Maintenance" controller="Audit" action="UpdateConnection" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="Connections Maintenance" controller="Audit" action="DeleteConnection" preservedRouteParameters="id"  />
+      <mvcSiteMapNode title="Processes Maintenance" controller="Audit" action="ProcessMaintenance" />
+      <mvcSiteMapNode title="Steps Maintenance" controller="Audit" action="StepMaintenance" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="History" controller="History" action="Edit" preservedRouteParameters="id" />
+    <mvcSiteMapNode title="Form Configuration" controller="FormConfiguration" action="Index">
+      <mvcSiteMapNode title="Form Maintenance" controller="FormConfiguration" action="FormMaintenance" >
+        <mvcSiteMapNode title="Help Maintenance" controller="FormConfiguration" action="HelpProcessConfiguration" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="Help Maintenance" controller="FormConfiguration" action="CreateUpdateHelpProcess" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="Help Maintenance" controller="FormConfiguration" action="UpdateHelpProcess" preservedRouteParameters="id" />
+        <mvcSiteMapNode title="Help Maintenance" controller="FormConfiguration" action="DeleteHelpProcess" preservedRouteParameters="id" />
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Processes Maintenance" controller="FormConfiguration" action="ProcessMaintenance" />
+      <mvcSiteMapNode title="Steps Maintenance" controller="FormConfiguration" action="StepMaintenance" />
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>

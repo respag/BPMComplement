@@ -1,0 +1,153 @@
+﻿@using Ultimus.ComponentManager.Models;
+@model Ultimus.ComponentManager.Models.HelpProcess
+
+@{
+    var _HelpProcessList = ViewBag.HelpProcessList as IEnumerable<HelpProcess>;
+    ViewBag.Title = "Configuración de la Ayuda de Formularios"; 
+}
+
+@MyHelpers.Tabs("help", Url)
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped table-hover">
+            <tr>
+
+                <th>
+                    <b>Id del Control</b>
+                    @*@Html.DisplayNameFor(model => model.Control)*@
+                </th>
+                <th>
+                    <b>Nombre</b>
+                    @*@Html.DisplayNameFor(model => model.ControlLabel)*@
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in _HelpProcessList)
+            {
+                <tr @((int)ViewBag.HelpProcessId == item.IdHelpProcess ? "class=success" : "")@((int)ViewBag.HelpProcessToUpdateId == item.IdHelpProcess ? "class=danger" : "")>
+                    <td>
+                        @if ((int)ViewBag.HelpProcessId == item.IdHelpProcess)
+                        { <i class="fa fa-info-circle"></i> }
+
+                        @if ((int)ViewBag.HelpProcessToUpdateId == item.IdHelpProcess)
+                        { <i class="fa fa-info-circle"></i> }
+
+                        <p style="-ms-word-wrap: break-word; word-wrap: break-word; width: 400px;">@Html.DisplayFor(modelItem => item.Control)</p> 
+                    </td>
+                    <td style="width: 50%;">
+                        <strong>@Html.DisplayFor(modelItem => item.ControlLabel)</strong>
+                        <br />
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+
+                    <td style="text-align: right;">
+                        <div class="btn-group" style="text-align: left;">
+                            <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i>&nbsp;Acción&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="@Url.Action("UpdateHelpProcess", "FormConfiguration", new { id = item.IdHelpProcess })">
+                                    <i class="fa fa-pencil-square-o"></i>&nbsp;Actualizar</a></li>
+                                <li><a href="@Url.Action("DeleteHelpProcess", "FormConfiguration", new { id = item.IdHelpProcess })"
+                                    data-confirm="Atención! ¿Está seguro de querer borrar esto?">
+                                    <i class="fa fa-eraser"></i>&nbsp;Borrar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+
+
+
+
+
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Procesos</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.Label("Nombre de la Aplicación Web")
+                    @Html.TextBoxFor(model => model.CatForms.CatWebAplications.WebAplicationName,
+                        new { @class = "form-control", @placeholder = "Nombre de la aplicación Web", @readonly = "true" })
+                </div>
+
+                @using (Html.BeginForm("CreateUpdateHelpProcess", "FormConfiguration", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(model => model.IdHelpProcess)
+                    @Html.HiddenFor(model => model.IdForm)
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.Control)*@
+                        <b>Id del Control</b>
+                        @if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                        { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }
+                        @Html.TextBoxFor(model => model.Control, new { @class = "form-control", @placeholder = "Id del control" })
+                        @Html.ValidationMessageFor(model => model.Control, null, new { @class = "label label-warning" })
+
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.ControlLabel)*@
+                        <b>Nombre del Control</b>
+                        @if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                        { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }
+                        @Html.TextBoxFor(model => model.ControlLabel, new { @class = "form-control", @placeholder = "Nombre del control" })
+                        @Html.ValidationMessageFor(model => model.ControlLabel, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.Text)*@
+                        <b>Texto de Ayuda</b>
+                        @if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                        { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }
+                        @Html.TextAreaFor(model => model.Text, 8, 0, new { @class = "form-control", @placeholder = "Texto de Ayuda" })
+                        @Html.ValidationMessageFor(model => model.Text, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <input type="submit" value="Save" class="btn btn-success" />       
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.IsCreated != null)
+{ 
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+@if (ViewBag.IsUpdated != null)
+{ 
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+@if (ViewBag.IsDeleted != null)
+{ 
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}

@@ -1,0 +1,195 @@
+﻿@using Ultimus.ComponentManager.Models
+@model Ultimus.ComponentManager.Models.FormsProcess
+@{
+    ViewBag.Title = "Formulario de Configuración de Procesos";
+    var _FormsProcessesList = ViewBag.FormsProcessesList as IEnumerable<FormsProcess>;
+}
+
+@MyHelpers.Tabs("index", Url)
+
+
+<div class="row">
+    <div class="col-md-8">
+
+        @if (_FormsProcessesList != null)
+        {
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FormOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CatForms.FormLabel)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CatForms.FormFile)
+                    </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.CatForms.CatWebAplications.WebAplicationName)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in _FormsProcessesList)
+                {
+                    <tr @((int)ViewBag.IdFormsProcessAdded == item.IdFormProcess ? "class=success" : "")>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FormOrder)
+                        </td>
+                        <td>
+                            @if ((int)ViewBag.IdFormsProcessAdded == item.IdFormProcess)
+                            {
+                                <i class="fa fa-info-circle"></i>
+                            }
+                            @Html.DisplayFor(modelItem => item.CatForms.FormLabel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CatForms.FormFileLimit)
+                            @if (item.CatForms.FormFileLength == true)
+                            {
+                                <i class="fa fa-info-circle" data-toggle="tooltip" title="@item.CatForms.FormFile"></i>
+                            }
+                        </td>
+                         <td>
+                        @Html.DisplayFor(modelItem => item.CatForms.CatWebAplications.WebAplicationName)
+                    </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group" style="text-align: left;">
+                                <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>&nbsp;Action&nbsp;<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="@Url.Action("DeleteFormProcess", "FormConfiguration", new { id = item.IdFormProcess })"
+                                    data-confirm="Warning! Are you sure you want to delete this?">
+                                        <i class="fa fa-eraser"></i>&nbsp;Delete</a></li>
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong><i class="fa fa-info-circle"></i>&nbsp;Por favor, seleccione un proceso y etapa.</strong>
+            </div>
+        
+        }
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de Formularios de Procesos</h3>
+            </div>
+            <div class="panel-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <div class="form-group">
+                        @Html.ActionLink("Procesos", "ProcessMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                        <i class="fa fa-cog"></i>
+                        @Html.DropDownListFor(model => model.IdProcess, (SelectList)ViewBag.ProcessDLL, "Seleccione una Opción", new { @class = "form-control", onchange = "SendFormDLL(this.form);" })
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("Paso", "StepMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                        <i class="fa fa-cog"></i>
+                        @if (ViewBag.IdStepDLL != null)
+                        {
+                            @Html.DropDownListFor(model => model.IdStep, (IEnumerable<SelectListItem>)ViewBag.IdStepDLL, "Seleccione una Opción", new { @class = "form-control", onchange = "SendFormDLL(this.form);" })
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Seleccione un Proceso para mostrar su lista de Pasos!</strong>
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("Aplicación Web", "Index","WebAplication" , null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                        <i class="fa fa-cog"></i>
+
+                        @if (ViewBag.WebAplicationsList != null)
+                        {
+                            @Html.DropDownListFor(model => model.IdWebAplication, (SelectList)ViewBag.WebAplicationsList, "Seleccione una Opción", new { @class = "form-control", onchange = "SendFormDLL(this.form);" })
+                        }
+                        else
+                        { 
+                            <div class="alert alert-warning">
+                                <strong>Seleccione un Proceso para mostrar su lista de Pasos!</strong>
+                            </div>
+                        }
+                    </div>
+                }
+                <hr />
+                <h3>Agregar Formulario</h3>
+
+                @using (Html.BeginForm("CreateFormProcess", "FormConfiguration", FormMethod.Post, new { @role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(model => model.IdStep, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.ActionLink("Formulario", "FormMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick = "LoadMessage();" })
+                        <i class="fa fa-cog"></i>
+                        @if (ViewBag.FormList != null)
+                        {
+                            @Html.DropDownListFor(model => model.IdForm, (IEnumerable<SelectListItem>)ViewBag.FormList, "Elija un Paso", new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Seleccione una Aplicación Web para mostrar la lista de Formularios!</strong>
+                            </div>
+                        }
+                        @Html.ValidationMessageFor(model => model.IdForm, null, new { @class = "label label-warning" })
+                    </div> 
+
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.FormOrder)*@
+                        <b>Orden</b>
+
+                        @Html.TextBoxFor(model => model.FormOrder, new { @class = "form-control", @placeholder = "Form Order" })
+                        @Html.ValidationMessageFor(model => model.FormOrder, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <input type="submit" value="Grabar" class="btn btn-success" />
+                    @Html.TextBoxFor(model => model.IdStep, new { @class = "form-control", @placeholder = "Column Name", @style = "visibility:hidden;" })
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if ((int)ViewBag.IdFormsProcessAdded != -1)
+{    
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+@if ((string)ViewBag.DeleteFormStatus == "success")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was deleted Correctly', 'Item Deleted!');
+            });
+        </script>
+    }
+}

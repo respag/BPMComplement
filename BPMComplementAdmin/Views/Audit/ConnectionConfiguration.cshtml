@@ -1,0 +1,259 @@
+﻿@using Ultimus.ComponentManager.Models;
+@model Ultimus.ComponentManager.Models.CatConnections
+
+@{
+    ViewBag.Title = "Configuración de Conectores";
+    ViewBag.Aplicacion = System.Configuration.ConfigurationManager.AppSettings["Aplicacion"];
+    var ConnectionsList = ViewBag.ConnectionsList as IEnumerable<CatConnections>;
+}
+
+@MyHelpers.TabsAudit("connection", Url)
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped table-hover" id="example">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdConnections)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ConnectionName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdConnectionType)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in ConnectionsList)
+            {
+                <tr @(item.isUpdatedOrCreated ? "class=success" : "") @(item.toUpdate ? "class=danger" : "")>
+                    <td id="idConn">
+                        @Html.DisplayFor(modelItem => item.IdConnections)
+                    </td>
+
+                    <td>
+                        @if (item.isUpdatedOrCreated || item.toUpdate)
+                        {
+                            <i class="fa fa-info-circle"></i>
+                        }
+
+                        @Html.DisplayFor(modelItem => item.ConnectionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatConnectionType.ConnectionName)
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="btn-group" style="text-align: left;">
+                            <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i>&nbsp;Acción&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="@Url.Action("UpdateConnection", "Audit", new { id = item.IdConnections })">
+                                        <i class="fa fa-pencil-square-o"></i>&nbsp;Actualizar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("DeleteConnection", "Audit", new { id = item.IdConnections })"
+                                       data-confirm="Atención! ¿Está seguro de querer borrar esto?">
+                                        <i class="fa fa-eraser"></i>&nbsp;Borrar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de Conexión</h3>
+            </div>
+            <div class="panel-body">
+
+                @*@using (Html.BeginForm("CreateUpdateConnection", "Audit", FormMethod.Post))
+                {*@
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(model => model.IdConnections)
+
+                    <div class="form-group">
+
+                        <b>Usuario</b> <input class="form-control" value="@MyHelpers.DevuelveUsuario(Model.ConnectionString)" id="txtUsuario" />
+                        @*@Html.TextBoxFor(model => model.ConnectionString, new { @class = "form-control" })*@
+                        @Html.ValidationMessageFor(model => model.ConnectionString, null, new { @class = "label label-warning" })
+                    </div>
+
+                    <div class="form-group">
+                        <b>Contraseña</b> <input class="form-control" type="password" value="@MyHelpers.DevuelvePwd(Model.ConnectionString)" id="txtPwd" />
+                        @Html.ValidationMessageFor(model => model.ConnectionString, null, new { @class = "label label-warning" })
+                    </div>
+
+                    <div class="form-group">
+                        <b>Base de Datos</b> <input class="form-control" value="@MyHelpers.DevuelveBD(Model.ConnectionString)" id="txtDb" />
+                        @Html.ValidationMessageFor(model => model.ConnectionString, null, new { @class = "label label-warning" })
+                    </div>
+
+                    <div class="form-group">
+                        <b>Servidor</b> <input class="form-control" value="@MyHelpers.DevuelveServer(Model.ConnectionString)" id="txtSvr" />
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.ConnectionString)*@
+                        @*   @if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                            { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }*@
+                        @Html.TextBoxFor(model => model.ConnectionString, new { @class = "form-control oculto", @placeholder = "Control Id" })
+                        @Html.ValidationMessageFor(model => model.ConnectionString, null, new { @class = "label label-warning" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConnectionName)
+                        @* @if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                            { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }*@
+                        @Html.TextBoxFor(model => model.ConnectionName, new { @class = "form-control", @id = "txtName" })
+                        @Html.ValidationMessageFor(model => model.ConnectionName, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IdConnectionType)
+                        @*@if ((int)ViewBag.HelpProcessToUpdateId != -1)
+                            { <i style="color: red;" class="fa fa-arrow-circle-left"></i> }*@
+                        @{
+                           ViewBag.SelectedValue = ((SelectList)ViewBag.ConnectionTypesList).SelectedValue;
+                           if (ViewBag.SelectedValue == null)
+                           {
+                               ViewBag.SelectedValue = -1;
+                           }
+                        }
+                        @Html.DropDownListFor(model => model.IdConnectionType, (SelectList)ViewBag.ConnectionTypesList, "ELIJA UNA OPCIÓN", new { @class = "form-control", @id="IdConn" })
+
+                        @Html.ValidationMessageFor(model => model.IdConnectionType, null, new { @class = "label label-warning" })
+                    </div>
+
+                    <input type="submit" value="Crear" class="btn btn-success" id="btnCreaOActualiza" />
+                @*}*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.isUpdatedOrCreated)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Su información ha sido grabada correctamente!', 'Exito');
+                
+            });
+        </script>
+    }
+}
+
+@if (Model.isDeleted)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Su infromación ha sido borrada corectamente!', 'Item Borrado');
+                location.href ="http://" + window.location.host + "/Audit/ConnectionConfiguration";
+            });
+        </script>
+    }
+}
+
+@if (Model.inUse)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.warning("You can't delete this item because is in use", "This Item is in Use!");
+            });
+        </script>
+    }
+}
+
+
+@*@if (Model.toUpdate)
+{*@
+    @*@section scripts{*@
+        <script>
+            $(document).ready(function () {
+                var app = '@ViewBag.Aplicacion';
+                if ($("#txtUsuario").val() != "") {
+                    $("#btnCreaOActualiza").val("Actualizar");
+                }
+
+                $("#btnCreaOActualiza").click(function (e) {
+                    //Primero chequea para ver si la connectionstring es valida
+                    var connString = "Data Source=" + $("#txtSvr").val() + ";Initial Catalog=" +
+                                   $("#txtDb").val() + ";User ID=" + $("#txtUsuario").val() + ";Password=" + $("#txtPwd").val();
+                    var url = app + 'Audit/ValidarConexion?connstring=_connString'.replace('_connString', connString);
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(data) {
+                            //Si el conector es valido y  estamos actualizando
+                            if(data=="True" && $("#btnCreaOActualiza").val() == "Actualizar"){
+                                var idConexion = (@ViewBag.Id).toString();
+                                $.ajax({
+                                    type: "PUT",
+                                    url: "http://192.168.110.10/APIConectores/api/CatConnections/" + idConexion,
+                                    data: {
+                                        "IdConnections": parseInt(idConexion),
+                                        "ConnectionString": connString,
+                                        "ConnectionName": $("#txtName").val(),
+                                        "IdConnectionType": @ViewBag.SelectedValue  ,
+                                    },
+                                    //contentType: 'application/json; charset=utf-8',
+                                    //dataType: "json",
+                                    success: function (data) {
+                                        toastr.success('El conector se ha modificado exitosamente.', "Actualización Correcta");
+                                        location.href ="http://" + window.location.host + "/Audit/ConnectionConfiguration";
+                                    },
+                                    error: function () {
+                                        alert('error');
+                                    }
+                                });
+                                e.preventDefault();
+                            }
+                                // Si el conector es valido y estamos agregando un conector nuevo
+                            else if(data=="True" && $("#btnCreaOActualiza").val() != "Actualizar"){
+                                $.ajax({
+                                    type: "POST",
+                                    url: "http://192.168.110.10/APIConectores/api/CatConnections",
+                                    data: JSON.stringify({
+                                        //"IdConnections": -1,
+                                        "ConnectionString": connString,
+                                        "ConnectionName": $("#txtName").val(),
+                                        "IdConnectionType":parseInt($("#IdConn").val())
+                                    }),
+                                    contentType: 'application/json; charset=utf-8',
+                                    dataType: "json",
+                                    success: function (data) {
+                                        toastr.success('El conector se ha grabado exitosamente.');
+                                        location.href ="http://" + window.location.host + "/Audit/ConnectionConfiguration";
+                                    },
+                                    error: function () {
+                                        toastr.error('error:');
+                                    }
+                                });
+                            }
+                                //Si el conector es inválido
+                            else if(data=="False"){
+                                toastr.error('El conector no es válido!', 'Error');
+                                location.href = app + "/Audit/ConnectionConfiguration";
+                            }
+                        },
+                        error: function() {
+                            toastr.error('Algo anduvo mal', 'Error');
+                        }
+                    });
+                });
+            });
+</script>
+    @*}*@
+} 

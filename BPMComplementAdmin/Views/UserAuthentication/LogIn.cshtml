@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>LogIn</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/dashboard")
+    @Styles.Render("~/Content/awesome")
+    @Styles.Render("~/Content/toastr")
+</head>
+<body style="background-image: url(@Url.Action("bpmcloud", "Home")); background-size: cover;">
+    <!--login modal-->
+    <div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width: 750px;">
+            <div class="modal-content">
+
+                <div class="modal-body" style="background-image: url(@Url.Action("footerwatermark", "Home")); background-position: bottom left; background-repeat: repeat-x;">
+                    <div style="font-family:Vani; font-size:18px; font-weight:bold">Powered by:</div>
+                    <img src="@Url.Action("LogoSmall", "Home")" />
+                    <br />
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 style="font-family:Vani; font-size:28px; font-weight:bold">
+                                BPM Complement
+                                <br />
+                                <small>Version 1.2</small>
+                            </h3>
+
+                        </div>
+                        <div class="col-md-6" style="border-left-width:1px; border-left-style:solid; border-left-color:silver;">
+                   
+                            <form role="form">
+                                  <h4 class="oculto">Server Information</h4>
+                                <div class="form-group oculto">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" ><i class="fa fa-globe" style="width:20px;color:#357ebd"></i></span>
+                                        <input type="text" class="form-control" placeholder="Server">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button">Choose</button>
+                                        </span>
+                                    </div>
+                                    <!-- /input-group -->
+                                </div>
+                                <h4>Credenciales de Usuario</h4>
+                                <div class="form-group">
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user" style="width:20px;"></i></span>
+                                        <input type="text" id="txtUser" class="form-control" placeholder="Nombre de Usuario">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-lock" style="width:20px;"></i></span>
+                                        <input type="password" class="form-control" placeholder="Contraseña">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" ><i class="fa fa-sitemap" style="width:20px;"></i></span>
+                                        <select id="servers" class="form-control">
+                                            <option>Elija un Dominio</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="javascript: LoadMessage();  rutina();@*location.href = '@Url.Action("Index", "Home")';*@">Conectarse</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-top-right">
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-migrate")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/toastr")
+   
+    <script>
+    //get a reference to the select element
+    var $select = $('#servers');
+
+    //request the JSON data and parse into the select element
+    $.getJSON('http://' + window.location.host + '/' + window.location.pathname.split('/')[1] + '/servidores.json', function (data) {
+
+        //clear the current content of the select y escribe el mensaje
+        $select.html('');
+        $select.append('<option id="0">Elija un Dominio, por favor...</option>');
+
+
+        //iterate over the data and append a select option
+        $.each(data.servers, function (key, val) {
+            $select.append('<option id="' + val.id + '">' + val.name + '</option>');
+        })
+    });
+
+    function rutina() {
+        var obj;
+        var dom = $("#servers").find(":selected").text();
+        var usr = $("#txtUser").val();
+        $.getJSON('http://192.168.110.10/BPMComplementAPI/api/IsLogued/' + dom + "/" + usr, function (data) {
+            obj = jQuery.parseJSON(data);
+            if (obj.isLogued === true)
+                location.href = '@Url.Action("Index", "Home")';
+            else
+                location.href = '@Url.Action("LogIn", "UserAuthentication")';
+        });
+    }
+    </script>
+
+</body>
+    @Scripts.Render("~/Scripts/Ultimus-Framework")
+</html>
+
+

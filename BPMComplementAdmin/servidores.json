@@ -1,0 +1,18 @@
+﻿{"servers": [
+  {
+    "id": "1",
+    "name": "ultimus.com"
+  },
+  {
+    "id": "2",
+    "name": "sercop.com"
+  },
+    {
+        "id": "3",
+        "name": "soce.int"
+    },
+    {
+    "id": "4",
+    "name": "nuevo.com"
+  }
+]}

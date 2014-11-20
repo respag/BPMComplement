@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+
+    <mvcSiteMapNode title="Audit CON" controller="Audit" action="Index">
+      <mvcSiteMapNode title="Connections" controller="Audit" action="ConnectionConfiguration" />
+      <mvcSiteMapNode title="Connections" controller="Audit" action="CreateUpdateConnection" />
+      <mvcSiteMapNode title="Connections" controller="Audit" action="UpdateConnection" preservedRouteParameters="id" />
+      <mvcSiteMapNode title="Connections" controller="Audit" action="DeleteConnection" preservedRouteParameters="id"  />
+      <mvcSiteMapNode title="Processes" controller="FormConfiguration" action="ProcessMaintenance" />
+      <mvcSiteMapNode title="Steps" controller="FormConfiguration" action="StepMaintenance" />
+    </mvcSiteMapNode>
+
+    <mvcSiteMapNode title="History" controller="History" action="Edit" preservedRouteParameters="id" />
+    
+    <mvcSiteMapNode title="Form Configuration" controller="FormConfiguration" action="Index">
+      <mvcSiteMapNode title="Form Maintenance" controller="FormConfiguration" action="FormMaintenance" />
+      <mvcSiteMapNode title="Processes" controller="FormConfiguration" action="ProcessMaintenance" />
+    </mvcSiteMapNode>
+
+  </mvcSiteMapNode>
+</mvcSiteMap>

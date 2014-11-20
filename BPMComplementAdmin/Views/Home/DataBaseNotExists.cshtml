@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Component Configuration Database";
+}
+
+<div class="alert alert-danger fade in">
+    <h3>La base de datos de Configuration de componentes no existe!</h3>
+    <br />
+    <p>
+        <b>BPM Complement</b> no detectó the la base de datos para la configuración de componentes.
+        Si se encuentra en el proceso de instalación de <b>BPM Complement</b>, por favor ejecute la acción <strong>Crear la base de datos de Configuración</strong>.
+        <br />
+        <br />
+        NOTA: si ya ha instalado <b>BPM Complement</b>, por favor contacte al Administrador de Ultimus.
+    </p>
+    <br />
+    <p>
+        @using (Html.BeginForm("CreateDataBase", "Home", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-danger">Crear la base de datos de Configuración</button>
+        }
+    </p>
+</div>

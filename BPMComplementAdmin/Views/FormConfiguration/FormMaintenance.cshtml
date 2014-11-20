@@ -1,0 +1,181 @@
+﻿@using Ultimus.ComponentManager.Models
+@model Ultimus.ComponentManager.Models.CatForms
+
+@{
+    ViewBag.Title = "Mantenimiento de Formularios";
+    var _CatFormList = ViewBag.CatFormList as IEnumerable<CatForms>;
+    var WebAplicationsList = ViewBag.WebAplicationsList as IEnumerable<SelectListItem>;
+}
+
+@MyHelpers.Tabs("forms", Url)
+
+@functions{
+    string rutina(string cad)
+    {
+        if (cad.Length > 30)
+            return cad.Insert(31, Environment.NewLine);
+        else
+            return cad;
+    }
+}
+<div class="row">
+    <div class="col-md-8">
+        @if (ViewBag.CatFormList != null)
+        {
+            <table class="table table-striped table-hover">
+                <tr>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.IdForm)
+                    </th>*@
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FormLabel)*@
+                        <b>Nombre del Formulario</b>
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FormFile)*@
+                        <b>Archivo</b>
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in _CatFormList)
+                {
+                    <tr @((int)ViewBag.FormAddedId == item.IdForm ? "class=success" : "")@((int)ViewBag.FormToUpdateId == item.IdForm ? "class=danger" : "")>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.IdForm)
+                        </td>*@
+                        <td>
+                            @if ((int)ViewBag.FormAddedId == item.IdForm)
+                            {
+                                <i class="fa fa-info-circle"></i>
+                            }
+
+                            @if ((int)ViewBag.FormToUpdateId == item.IdForm)
+                            {
+                                <i class="fa fa-info-circle"></i>
+                            }
+                            @Html.DisplayFor(modelItem => item.FormLabel)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FormFileLimit)
+
+                            @if (item.FormFileLength == true)
+                            {
+                               <i class="fa fa-lightbulb-o" data-container="body" data-toggle="popover" data-placement="top" data-content='@rutina(item.FormFile)'></i>
+                            }
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group" style="text-align: left;">
+                                <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>&nbsp;Acción&nbsp;<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Action("HelpProcessConfiguration", "FormConfiguration", new { id = item.IdForm })" onclick="LoadMessage();">
+                                        <i class="fa fa-comment-o"></i>&nbsp;Configuración de la Ayuda de formularios</a></li>
+                                    <li><a href="@Url.Action("UpdateFormMaintenance", "FormConfiguration", new { id = item.IdForm })"
+                                    onclick="LoadMessage();">
+                                        <i class="fa fa-pencil-square-o"></i>&nbsp;Actualizar</a></li>
+                                    <li><a href="@Url.Action("DeleteForm", "FormConfiguration", new { id = item.IdForm })"
+                                    data-confirm="Atención! ¿Está seguro de querer borrar esto?">
+                                        <i class="fa fa-eraser"></i>&nbsp;Borrar</a></li>
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>   
+        }
+        else
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong><i class="fa fa-info-circle"></i>&nbsp;Por favor, seleccione un proceso para mostrar la lista de formularios.</strong>
+            </div>
+        }
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de Formulario</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    <div class="form-group">
+                        @Html.ActionLink("Aplicación Web", "Index","WebAplication", null, new { @style = "color: black;font-weight:bold;font-size:11pt;", @onclick="LoadMessage();" })
+                        <i class="fa fa-cog"></i>
+                        @Html.DropDownListFor(model => model.IdWebAplication, WebAplicationsList, "Seleccione una Opción", new { @class = "form-control", onchange = "SendForm(this.form);" })
+                    </div>
+                }
+                <hr />
+                <h3>Crear un nuevo Formulario</h3>
+                @using (Html.BeginForm("CreateForm", "FormConfiguration", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.IdForm)
+     
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.FormFile)*@
+                        <b>Archivo</b>
+                        @if ((int)ViewBag.FormToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.FormFile, new { @class = "form-control", @placeholder = "Archivo del Formulario" })
+                        @Html.ValidationMessageFor(model => model.FormFile, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.FormLabel)*@
+                        <b>Nombre</b>
+                        @if ((int)ViewBag.FormToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.FormLabel, new { @class = "form-control", @placeholder = "Nombre del Formulario" })
+                        @Html.ValidationMessageFor(model => model.FormLabel, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(model => model.IdWebAplication, null, new { @class = "label label-warning" })
+                    </div>
+                    
+                    <input type="submit" value="Grabar" class="btn btn-success" />
+                    
+                    @Html.TextBoxFor(model => model.IdWebAplication, new { @class = "form-control", @placeholder = "Column Name", @style = "visibility:hidden;" })
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if ((int)ViewBag.FormAddedId != -1)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Su información ha sido grabada correctamente', 'Éxito!');
+            });
+        </script>
+    }
+}
+@if ((string)ViewBag.DeleteFormStatus == "success")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Su información fue borrada correctamente', 'Éxito!');
+            });
+        </script>
+    }
+}
+else if ((string)ViewBag.DeleteFormStatus == "error")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.warning('El formulario no puede ser borrado, debido a que tiene estapas aociadas', 'Atención!');
+            });
+        </script>
+    }
+}

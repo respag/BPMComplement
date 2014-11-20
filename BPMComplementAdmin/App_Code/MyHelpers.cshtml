@@ -1,0 +1,205 @@
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
+
+
+@helper Tabs(string tabActive, UrlHelper Url)
+{
+    <ul class="nav nav-tabs">
+
+        @if (tabActive == "index")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Menú de Configuración
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("Index", "FormConfiguration")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Menú de Configuración
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "processes")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Procesos
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("ProcessMaintenance", "FormConfiguration")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Procesos
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "steps")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Pasos
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("StepMaintenance", "FormConfiguration")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Pasos
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "aplications")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Aplicaciones Web
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("Index", "WebAplication")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Aplicaciones Web
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "forms")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Formularios
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("FormMaintenance", "FormConfiguration")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Formularios
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "help")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Configuración de Ayuda
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "history")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;History Configuration
+                </a>
+            </li>
+        }
+
+    </ul>
+    
+    <br />
+    
+}
+
+
+@helper TabsAudit(string tabActive, UrlHelper Url)
+{
+    <ul class="nav nav-tabs">
+
+        @if (tabActive == "index")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Configuración de Auditoría
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("Index", "Audit")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Configuración de Auditoría
+                </a>
+            </li>
+        }
+
+        @if (tabActive == "connection")
+        {
+            <li class="active">
+                <a style="font-weight: bold;">
+                    <i class="fa fa-circle"></i>&nbsp;Conectores
+                </a>
+            </li>
+        }
+        else
+        {
+            <li>
+                <a href="@Url.Action("ConnectionConfiguration", "Audit")" style="color:#2a6496;" onclick="LoadMessage();">
+                    <i class="fa fa-circle-o"></i>&nbsp;Conectores
+                </a>
+            </li>
+        }
+
+
+    </ul>
+    
+    <br />   
+}
+
+@helper DevuelveUsuario(string cad)
+{
+    var usr ="";
+    if (cad!= null)
+    {
+        var arrCad = cad.Split(';');
+        usr = arrCad[2].Split('=')[1];
+    }
+    @usr
+}
+
+@helper DevuelvePwd(string cad)
+{
+    var pwd = "";
+    if (cad != null)
+    {
+        var arrCad = cad.Split(';');
+        pwd = arrCad[3].Split('=')[1];
+    }
+    @pwd
+}
+
+@helper DevuelveBD(string cad)
+{
+    var bd = "";
+    if (cad != null)
+    {
+        var arrCad = cad.Split(';');
+        bd = arrCad[1].Split('=')[1];
+    }
+    @bd
+}
+
+@helper DevuelveServer(string cad)
+{
+    var svr = "";
+    if (cad != null)
+    {
+        var arrCad = cad.Split(';');
+        svr = arrCad[0].Split('=')[1];
+    }
+    @svr
+}

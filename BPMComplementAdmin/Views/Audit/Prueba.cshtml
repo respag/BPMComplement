@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Prueba";
+}
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:7641/Audit/ValidarConexion?connstring=Data Source=192.168.110.12;Initial Catalog=Ultimus.SERCOP;User ID=Ultimus;Password=Ultimu$",
+            success: function (data) {
+                alert(data);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    });
+</script>

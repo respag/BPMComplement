@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Component Configuration Database";
+}
+
+
+
+<div class="alert alert-danger fade in">
+
+    <h4>Component configuration Database is outdated!</h4>
+    <br />
+    <p>Ultimus Component Manager has detected the database is outdated! For Updated your existing Database with last changes please take the action <strong>Update my Database structure</strong>. </p>
+    <br />
+    <br />
+    <p>
+        @using (Html.BeginForm("ExecutePendingMigrations", "Home", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-danger">Update my Database structure</button>
+        }
+    </p>
+</div>
+

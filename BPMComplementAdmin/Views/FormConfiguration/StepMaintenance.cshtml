@@ -1,0 +1,161 @@
+﻿@using Ultimus.ComponentManager.Models
+@model  Ultimus.ComponentManager.Models.CatSteps
+
+@{
+    ViewBag.Title = "Step Maintenance";
+    var _CatStepsList = ViewBag.CatStepsList as IEnumerable<CatSteps>;
+    var _CatProcessesList = ViewBag.CatProcessesList as IEnumerable<SelectListItem>;
+}
+
+@MyHelpers.Tabs("steps", Url)
+
+<div class="row">
+    <div class="col-md-8">
+        @if (_CatStepsList != null)
+        {
+            <table class="table table-striped table-hover">
+                <tr>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.IdStep)
+                    </th>*@
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.StepName)*@
+                        <b> Nombre de la etapa</b>
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.IdProcess)*@
+                        <b>Proceso</b>
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in _CatStepsList)
+                {
+                    <tr @((int)ViewBag.IdStepAdded == item.IdStep ? "class=success" : "")@((int)ViewBag.StepToUpdateId == item.IdStep ? "class=danger" : "")>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.IdStep)
+                        </td>*@
+                        <td>
+                            @if ((int)ViewBag.IdStepAdded == item.IdStep)
+                            {
+                                <i class="fa fa-info-circle"></i>
+                            }
+                            @if ((int)ViewBag.StepToUpdateId == item.IdStep)
+                            {
+                                <i class="fa fa-info-circle"></i>
+                            }
+                            @Html.DisplayFor(modelItem => item.StepName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProcess)
+                        </td>
+                        <td style="text-align: right;">
+                            <div class="btn-group" style="text-align: left;">
+                                <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">
+                                    <i class="fa fa-wrench"></i>&nbsp;Acción&nbsp;<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Action("UpdateStepMaintenance", "FormConfiguration", new { id = item.IdStep })"
+                                    onclick="LoadMessage();">
+                                        <i class="fa fa-pencil-square-o"></i>&nbsp;Actualizar</a></li>
+
+                                    <li><a href="@Url.Action("DeleteStep", "FormConfiguration", new { id = item.IdStep })"
+                                    data-confirm="Atención! ¿Está seguro de querer borrar esto?">
+                                        <i class="fa fa-eraser"></i>&nbsp;Borrar</a></li>
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong><i class="fa fa-info-circle"></i>&nbsp;Por favor, seleccione un proceso para mostrar la lista de sus pasos.</strong>
+            </div>
+        
+        }
+    </div>
+    <div class="col-md-4">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Información de la Etapa</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+                {
+                    <div class="form-group">
+                        @Html.ActionLink("Procesos", "ProcessMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;" })
+                        <i class="fa fa-cog"></i>
+                        @Html.DropDownListFor(model => model.IdProcess, _CatProcessesList, "Seleccione una Opción", new { @class = "form-control", onchange = "SendForm(this.form);" })
+                    </div>
+                }
+                <hr />
+                <h3>Crear una nueva etapa</h3>
+                @using (Html.BeginForm("CreateStep", "FormConfiguration", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    @Html.HiddenFor(model => model.IdStep)
+     
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.StepName)*@
+                        <b>Nombre de la etapa</b>
+                        @if ((int)ViewBag.StepToUpdateId != -1)
+                        {
+                            <i style="color: red;" class="fa fa-arrow-circle-left"></i>
+                        }
+                        @Html.TextBoxFor(model => model.StepName, new { @class = "form-control", @placeholder = "Nombre de la etapa" })
+                        @Html.ValidationMessageFor(model => model.StepName, null, new { @class = "label label-warning" })
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(model => model.IdProcess, null, new { @class = "label label-warning" })
+                    </div>
+                   
+                    <input type="submit" value="Grabar" class="btn btn-success" />
+                    
+                    @Html.TextBoxFor(model => model.IdProcess, new { @class = "form-control", @placeholder = "Column Name", @style = "visibility:hidden;" })
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if ((int)ViewBag.IdStepAdded != -1)
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was saved Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+
+@if ((string)ViewBag.DeleteStepStatus == "success")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.success('Your information was deleted Correctly', 'Success!');
+            });
+        </script>
+    }
+}
+else if ((string)ViewBag.DeleteStepStatus == "error")
+{
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                toastr.warning('The Step cannot be deleted because have Forms associated', 'Warning!');
+            });
+        </script>
+    }
+}
