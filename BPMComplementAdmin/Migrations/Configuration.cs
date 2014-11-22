@@ -10,6 +10,7 @@ namespace Ultimus.AuditManager.Admin.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            ContextKey = "Ultimus.ComponentManager.Models.ComponentManagerContext";
         }
 
         protected override void Seed(Ultimus.ComponentManager.Models.ComponentManagerContext context)

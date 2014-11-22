@@ -234,6 +234,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405031615441_InitialCreate.cs" />
+    <Compile Include="Migrations\201405031615441_InitialCreate.Designer.cs">
+      <DependentUpon>201405031615441_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411220231582_CambioRootLocation.cs" />
+    <Compile Include="Migrations\201411220231582_CambioRootLocation.Designer.cs">
+      <DependentUpon>201411220231582_CambioRootLocation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuditManagerServices.asmx.cs">
@@ -434,6 +442,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405031615441_InitialCreate.resx">
+      <DependentUpon>201405031615441_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411220231582_CambioRootLocation.resx">
+      <DependentUpon>201411220231582_CambioRootLocation.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

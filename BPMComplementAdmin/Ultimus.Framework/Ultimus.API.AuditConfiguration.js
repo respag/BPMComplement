@@ -219,9 +219,7 @@ this.FillTableList = function () {
             UI.ENDREQUEST();
             $('#modalTableConfig').modal('show');
 
-            $('#modalTableConfig .modal-content').css({'height':'600px', 'overflow':'auto'});
-
-
+              $('#modalTableConfig .modal-content').css({ 'height': '600px', 'overflow': 'auto' });
         });
 
     });

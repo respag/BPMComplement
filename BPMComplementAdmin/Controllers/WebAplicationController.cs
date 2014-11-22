@@ -87,7 +87,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
                 Model.inUse = true;
             }
 
-            ViewBag.WebAplicationsList = db.CatWebAplications.ToList();
+            ViewBag.WebAplicationsList = db.CatWebAplications.OrderBy(w => w.IdWebAplication).ToList();
 
             return View("Index", Model);
         }

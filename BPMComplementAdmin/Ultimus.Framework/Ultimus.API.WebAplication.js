@@ -9,9 +9,9 @@ this.ShowWebAplicationRelated = function (id) {
         var tableHtml = "";
 
         tableHtml += "<tr>";
-        tableHtml += "<th>#</th>";
-        tableHtml += "<th>Web Aplication Name</th>";
-        tableHtml += "<th>Web Aplication Path</th>";
+        //tableHtml += "<th>#</th>";
+        tableHtml += "<th>Aplicación Web</th>";
+        tableHtml += "<th>Url</th>";
         tableHtml += "<th></th>";
         tableHtml += "</tr>";
 
@@ -29,7 +29,7 @@ this.ShowWebAplicationRelated = function (id) {
                 tableHtml += "<tr>";
             }
 
-            tableHtml += "<td>" + item.IdWebAplication + "</td>";
+            //tableHtml += "<td>" + item.IdWebAplication + "</td>";
             tableHtml += "<td>" + item.WebAplicationName + "</td>";
             tableHtml += "<td>" + item.WebAplicationPath + "</td>";
 
@@ -60,6 +60,8 @@ this.ShowWebAplicationRelated = function (id) {
         $("#loadingGif").hide();
 
         $('#WebAplicationRelated').modal('show');
+
+        $('.modal-content').css({ 'height': '600px', 'overflow': 'auto' });
     });
 
 };
@@ -71,7 +73,7 @@ this.btnAddWebAplication = function (id, IdWebAplication) {
 
     tableHtml += "<button id=\"btnAddWebAplication\" type=\"button\" class=\"btn btn-info btn-xs\" "
     tableHtml += "onClick=\"btnAddWebAplication_OnClick('" + id + "', '" + IdWebAplication + "');\">";
-    tableHtml += "Add Web Aplication";
+    tableHtml += "Agregar Aplicación";
     tableHtml += "</button>";
 
     return tableHtml;

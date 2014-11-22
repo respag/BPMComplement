@@ -34,13 +34,13 @@ namespace Ultimus.ComponentManager.Models
         
         #endregion
 
-        #region RootLocation
+        //#region RootLocation
 
-        [DisplayName("Root location")]
-        [Required(ErrorMessage = "Root Location is required")]
-        public string RootLocation { get; set; }
+        //[DisplayName("Root location")]
+        ////[Required(ErrorMessage = "Root Location is required")]
+        //public string RootLocation { get; set; }
 
-        #endregion
+        //#endregion
 
         #region ProcessVersion
 

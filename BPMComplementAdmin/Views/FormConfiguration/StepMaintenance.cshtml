@@ -2,7 +2,7 @@
 @model  Ultimus.ComponentManager.Models.CatSteps
 
 @{
-    ViewBag.Title = "Step Maintenance";
+    ViewBag.Title = "Mantenimiento de Etapas";
     var _CatStepsList = ViewBag.CatStepsList as IEnumerable<CatSteps>;
     var _CatProcessesList = ViewBag.CatProcessesList as IEnumerable<SelectListItem>;
 }
@@ -20,7 +20,7 @@
                     </th>*@
                     <th>
                         @*@Html.DisplayNameFor(model => model.StepName)*@
-                        <b> Nombre de la etapa</b>
+                        <b>Etapa</b>
                     </th>
                     <th>
                         @*@Html.DisplayNameFor(model => model.IdProcess)*@
@@ -46,7 +46,7 @@
                             @Html.DisplayFor(modelItem => item.StepName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IdProcess)
+                            @Html.DisplayFor(modelItem => item.CatProcesses.ProcessName)
                         </td>
                         <td style="text-align: right;">
                             <div class="btn-group" style="text-align: left;">
@@ -83,19 +83,19 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Información de la Etapa</h3>
+                <h3 class="panel-title">Información de Etapa</h3>
             </div>
             <div class="panel-body">
                 @using (Html.BeginForm())
                 {
                     <div class="form-group">
-                        @Html.ActionLink("Procesos", "ProcessMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;" })
+                        @Html.ActionLink("Proceso", "ProcessMaintenance", null, new { @style = "color: black;font-weight:bold;font-size:11pt;" })
                         <i class="fa fa-cog"></i>
                         @Html.DropDownListFor(model => model.IdProcess, _CatProcessesList, "Seleccione una Opción", new { @class = "form-control", onchange = "SendForm(this.form);" })
                     </div>
                 }
                 <hr />
-                <h3>Crear una nueva etapa</h3>
+                <h3>Crear nueva etapa</h3>
                 @using (Html.BeginForm("CreateStep", "FormConfiguration", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
@@ -105,7 +105,7 @@
      
                     <div class="form-group">
                         @*@Html.LabelFor(model => model.StepName)*@
-                        <b>Nombre de la etapa</b>
+                        <b>Etapa</b>
                         @if ((int)ViewBag.StepToUpdateId != -1)
                         {
                             <i style="color: red;" class="fa fa-arrow-circle-left"></i>
@@ -133,7 +133,7 @@
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.success('Your information was saved Correctly', 'Success!');
+                toastr.success('Su información fue grabada correctamente', 'Éxito!');
             });
         </script>
     }
@@ -144,7 +144,7 @@
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.success('Your information was deleted Correctly', 'Success!');
+                toastr.success('Su información fue borrada correctamente', 'Éxito!');
             });
         </script>
     }
@@ -154,7 +154,7 @@ else if ((string)ViewBag.DeleteStepStatus == "error")
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.warning('The Step cannot be deleted because have Forms associated', 'Warning!');
+                toastr.warning('La etapa no puede ser borrada porque tiene formularios asociados', 'Atención!');
             });
         </script>
     }

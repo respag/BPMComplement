@@ -248,7 +248,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
             int UpdateStepMaintenanceId = 0;
 
             ViewBag.StepToUpdateId = -1;
-            ViewBag.CatProcessesList = new SelectList(db.CatProcesses, "IdProcess", "ProcessName");
+            ViewBag.CatProcessesList = new SelectList(db.CatProcesses.OrderBy(p=>p.ProcessName), "IdProcess", "ProcessName");
 
             if (objCache.GetMyCachedItem("UpdateStepMaintenanceId") != null)
             {
@@ -288,8 +288,11 @@ namespace Ultimus.AuditManager.Admin.Controllers
 
             if (id != 0)
             {
-                ViewBag.CatStepsList = new List<CatSteps>(from d in db.CatSteps where d.IdProcess == id select d);
-                ViewBag.CatProcessesList = new SelectList(db.CatProcesses, "IdProcess", "ProcessName", id);
+                ViewBag.CatStepsList = new List<CatSteps>(from d in db.CatSteps 
+                                                          where d.IdProcess == id 
+                                                          orderby d.StepName
+                                                          select d);
+                ViewBag.CatProcessesList = new SelectList(db.CatProcesses.OrderBy(p=>p.ProcessName), "IdProcess", "ProcessName", id);
                 _newCatSteps.IdProcess = id;
             }
 
@@ -312,13 +315,16 @@ namespace Ultimus.AuditManager.Admin.Controllers
 
             if (id != 0)
             {
-                ViewBag.CatStepsList = new List<CatSteps>(from d in db.CatSteps where d.IdProcess == id select d);
-                ViewBag.CatProcessesList = new SelectList(db.CatProcesses, "IdProcess", "ProcessName", id);
+                ViewBag.CatStepsList = new List<CatSteps>(from s in db.CatSteps 
+                                                          where s.IdProcess == id 
+                                                          orderby s.StepName
+                                                          select s);
+                ViewBag.CatProcessesList = new SelectList(db.CatProcesses.OrderBy(p=>p.ProcessName), "IdProcess", "ProcessName", id);
 
                 _newCatSteps.IdProcess = id;
             }
             else
-                ViewBag.CatProcessesList = new SelectList(db.CatProcesses, "IdProcess", "ProcessName");
+                ViewBag.CatProcessesList = new SelectList(db.CatProcesses.OrderBy(p=>p.ProcessName), "IdProcess", "ProcessName");
 
             return View(_newCatSteps);
         }

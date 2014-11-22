@@ -94,7 +94,7 @@
                         @Html.ValidationMessageFor(model => model.ProcessName, null, new { @class = "label label-warning" })
                     </div>
                     
-                    <div class="form-group">
+                    @*<div class="form-group">
                         @Html.LabelFor(model => model.RootLocation)
                         @if ((int)ViewBag.ProcessToUpdateId != -1)
                         {
@@ -102,7 +102,7 @@
                         }
                         @Html.TextBoxFor(model => model.RootLocation, new { @class = "form-control", @placeholder = "Root Location" })
                         @Html.ValidationMessageFor(model => model.RootLocation, null, new { @class = "label label-warning" })
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         @Html.LabelFor(model => model.ProcessVersion)
                         @if ((int)ViewBag.ProcessToUpdateId != -1)
@@ -126,7 +126,7 @@
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.success('Your information was saved Correctly', 'Success!');
+                toastr.success('Su información fue grabada correctamente.', 'Éxito!');
             });
         </script>
     }
@@ -136,7 +136,7 @@
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.success('Your information was deleted Correctly', 'Success!');
+                toastr.success('Su información fue borrada correctamente.', 'Éxito!');
             });
         </script>
     }
@@ -146,7 +146,7 @@ else if ((string)ViewBag.DeleteProcessStatus == "error")
     @section scripts{
         <script>
             jQuery(document).ready(function () {
-                toastr.warning('The Process cannot be deleted because have steps associated.', 'Warning!');
+                toastr.warning('El proceso no puede ser borrado porque tiene etapas asociadas.', 'Atención!');
             });
         </script>
     }      
