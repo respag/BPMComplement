@@ -39,6 +39,9 @@
                           <b>Aplicación Web</b>
                         @*@Html.DisplayNameFor(model => model.CatForms.CatWebAplications.WebAplicationName)*@
                     </th>
+                    <th>
+                        <b>Orden</b>
+                    </th>
                     <th></th>
                 </tr>
 
@@ -65,6 +68,7 @@
                          <td>
                         @Html.DisplayFor(modelItem => item.CatForms.CatWebAplications.WebAplicationName)
                     </td>
+                        <td>@Html.DisplayFor(modelItem => item.FormOrder)</td>
                         <td style="text-align: right;">
                             <div class="btn-group" style="text-align: left;">
                                 <button type="button" class="btn btn-info dropdown-toggle btn-xs" data-toggle="dropdown">

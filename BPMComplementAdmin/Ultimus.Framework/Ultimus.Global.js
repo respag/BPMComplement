@@ -6,7 +6,7 @@ var Ultimus = {};
 
 $(document).ajaxStart(function () {
 
-    LoadMessage();
+   // LoadMessage();
 
 
 });

@@ -111,35 +111,44 @@
     @Scripts.Render("~/bundles/toastr")
    
     <script>
-    //get a reference to the select element
-    var $select = $('#servers');
+        $(document).ready(function(){
 
-    //request the JSON data and parse into the select element
-    $.getJSON('http://' + window.location.host + '/' + window.location.pathname.split('/')[1] + '/servidores.json', function (data) {
+            //get a reference to the select element
+            var $select = $('#servers');
 
-        //clear the current content of the select y escribe el mensaje
-        $select.html('');
-        $select.append('<option id="0">Elija un Dominio, por favor...</option>');
+            //request the JSON data and parse into the select element
+            $.getJSON('http://' + window.location.host + '/' + window.location.pathname.split('/')[1] + '/servidores.json', function (data) {
+
+                //clear the current content of the select y escribe el mensaje
+                $select.html('');
+                $select.append('<option id="0">Elija un Dominio, por favor...</option>');
 
 
-        //iterate over the data and append a select option
-        $.each(data.servers, function (key, val) {
-            $select.append('<option id="' + val.id + '">' + val.name + '</option>');
-        })
-    });
-
-    function rutina() {
-        var obj;
-        var dom = $("#servers").find(":selected").text();
-        var usr = $("#txtUser").val();
-        $.getJSON('http://192.168.110.10/BPMComplementAPI/api/IsLogued/' + dom + "/" + usr, function (data) {
-            obj = jQuery.parseJSON(data);
-            if (obj.isLogued === true)
-                location.href = '@Url.Action("Index", "Home")';
-            else
-                location.href = '@Url.Action("LogIn", "UserAuthentication")';
-        });
-    }
+                //iterate over the data and append a select option
+                $.each(data.servers, function (key, val) {
+                    $select.append('<option id="' + val.id + '">' + val.name + '</option>');
+                })
+            });
+         });
+    
+        function rutina() {
+            var obj;
+            var dom = $("#servers").find(":selected").text();
+            var usr = $("#txtUser").val();
+            if (dom != "Elija un Dominio, por favor..." && usr != "" && usr != undefined) {
+                $.getJSON('http://192.168.110.10/BPMComplementAPI/api/IsLogued/' + dom + "/" + usr, function (data) {
+                    obj = jQuery.parseJSON(data);
+                    if (obj.isLogued === true)
+                        location.href = '@Url.Action("Index", "Home")';
+                    else
+                        //location.href = '@Url.Action("LogIn", "UserAuthentication")';
+                        location.href = 'http://' + window.location.host + '/';
+                });
+            } else {
+                //location.href = '@Url.Action("LogIn", "UserAuthentication")';
+                location.href = 'http://' + window.location.host + '/BPMComplement/';
+            }
+        }
     </script>
 
 </body>

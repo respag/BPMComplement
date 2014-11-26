@@ -69,27 +69,34 @@ namespace Ultimus.AuditManager.Admin.Controllers
         [HttpGet]
         public ActionResult DeleteWebAplication(int id)
         {
-            CatWebAplications Model = db.CatWebAplications.Find(id);
+           
+                CatWebAplications Model = db.CatWebAplications.Find(id);
+                //Primero comprueba si para ese Id de Web App hay formularios relacionados
+                var cantForms = (from f in db.CatForms
+                             select f).ToList();
+                
+                if (Model.WebAplicationDetails.Count == 0  && cantForms.Count == 0)
+                {
+                    db.CatWebAplications.Remove(Model);
+                    db.SaveChanges();
 
-            if (Model.WebAplicationDetails.Count == 0)
-            {
-                db.CatWebAplications.Remove(Model);
-                db.SaveChanges();
+                    ModelState.Clear();
+                    Model = new CatWebAplications();
+                    Model.isDeleted = true;
+                }
+                else
+                {
+                    ModelState.Clear();
+                    Model = new CatWebAplications();
+                    Model.inUse = true;
+                }
 
-                ModelState.Clear();
-                Model = new CatWebAplications();
-                Model.isDeleted = true;
+                ViewBag.WebAplicationsList = db.CatWebAplications.OrderBy(w => w.IdWebAplication).ToList();
+
+                return View("Index", Model);
             }
-            else
-            {
-                ModelState.Clear();
-                Model = new CatWebAplications();
-                Model.inUse = true;
-            }
-
-            ViewBag.WebAplicationsList = db.CatWebAplications.OrderBy(w => w.IdWebAplication).ToList();
-
-            return View("Index", Model);
-        }
+        
+        //    else return View("Index", Model);
+        //}
     }
 }

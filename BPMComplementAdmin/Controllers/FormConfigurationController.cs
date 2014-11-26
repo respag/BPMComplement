@@ -128,7 +128,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
 
             #region Get Process list
 
-            ViewBag.WebAplicationsList = new SelectList(db.CatWebAplications, "IdWebAplication", "WebAplicationName");
+            ViewBag.WebAplicationsList = new SelectList(db.CatWebAplications.OrderBy(w=>w.WebAplicationName), "IdWebAplication", "WebAplicationName");
             ViewBag.FormToUpdateId = -1;
 
             #endregion

@@ -1,9 +1,9 @@
-﻿
+﻿var flag = false;
 this.ShowWebAplicationRelated = function (id) {
 
     var uri = 'api/WebAplications/GetAllWebAplications/';
-
-    $.getJSON(server + uri + id).done(function (data) {
+    var app = $("#oculto").text();
+    $.getJSON(app + uri + id).done(function (data) {
 
         var UI = new Ultimus.UI();
         var tableHtml = "";
@@ -32,16 +32,18 @@ this.ShowWebAplicationRelated = function (id) {
             //tableHtml += "<td>" + item.IdWebAplication + "</td>";
             tableHtml += "<td>" + item.WebAplicationName + "</td>";
             tableHtml += "<td>" + item.WebAplicationPath + "</td>";
-
+            flag = item.isAddedToProcess
             if (id == item.IdProcess) {
 
-                if (item.isAddedToProcess) {
+                //if (item.isAddedToProcess) {
 
-                    tableHtml += "<td>Menu Configurated</td>";
-                }
-                else {
-                    tableHtml += "<td>" + btnRemoveWebAplication(id, item.IdWebAplication) + "</td>";
-                }
+                //     tableHtml += "<td>Menu Configurated</td>";
+                //    tableHtml += "<td>" + btnRemoveWebAplication(0,0) + "</td>";
+
+                //}
+                //else {
+                    tableHtml += "<td>" + btnRemoveWebAplication(id, item.IdWebAplication, flag) + "</td>";
+                //}
             }
             else {
 
@@ -82,6 +84,7 @@ this.btnAddWebAplication = function (id, IdWebAplication) {
 this.btnAddWebAplication_OnClick = function (id, IdWebAplication) {
 
     var uri = 'api/WebAplications/SaveWebAplicationsRelation/';
+    var app = $("#oculto").text();
 
     CatWebAplications = { "IdWebAplication": IdWebAplication, "IdProcess": id }
 
@@ -89,7 +92,7 @@ this.btnAddWebAplication_OnClick = function (id, IdWebAplication) {
 
     $.ajax({
         type: 'POST',
-        url: server + uri,
+        url: app + uri,
         cache: false,
         data: DTO,
         contentType: 'application/json; charset=utf-8',
@@ -110,49 +113,54 @@ this.btnAddWebAplication_OnClick = function (id, IdWebAplication) {
     });
 };
 
-this.btnRemoveWebAplication = function (id, IdWebAplication) {
+this.btnRemoveWebAplication = function (id, IdWebAplication,flag) {
 
     var tableHtml = "";
 
     tableHtml += "<button id=\"btnAddWebAplication\" type=\"button\" class=\"btn btn-danger btn-xs\" "
-    tableHtml += "onClick=\"btnRemoveWebAplication_OnClick('" + id + "', '" + IdWebAplication + "');\">";
-    tableHtml += "Remove Web Aplication";
-    tableHtml += "</button>";
+    tableHtml += "onClick=\"btnRemoveWebAplication_OnClick('" + id + "', '" + IdWebAplication +"'," + flag +");\">";
+        tableHtml += "Remover Aplicación";
+        tableHtml += "</button>";
 
-    return tableHtml;
+        return tableHtml;
 };
 
-this.btnRemoveWebAplication_OnClick = function (id, IdWebAplication) {
+this.btnRemoveWebAplication_OnClick = function (id, IdWebAplication, f) {
+    if (!f) {
+        var uri = 'api/WebAplications/RemoveWebAplicationsRelation/';
+        var app = $("#oculto").text();
 
-    var uri = 'api/WebAplications/RemoveWebAplicationsRelation/';
+        CatWebAplications = { "IdWebAplication": IdWebAplication, "IdProcess": id }
 
-    CatWebAplications = { "IdWebAplication": IdWebAplication, "IdProcess": id }
+        var DTO = JSON.stringify(CatWebAplications);
 
-    var DTO = JSON.stringify(CatWebAplications);
+        $.ajax({
+            type: 'POST',
+            url: app + uri,
+            cache: false,
+            data: DTO,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
 
-    $.ajax({
-        type: 'POST',
-        url: server + uri,
-        cache: false,
-        data: DTO,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (data) {
+                if (data == "DONE") {
 
-            if (data == "DONE") {
+                    TablesToAudit = new Array();
+                    toastr.success('Your configuration was saved successfully', "Success!");
 
-                TablesToAudit = new Array();
-                toastr.success('Your configuration was saved successfully', "Success!");
-
-                ShowWebAplicationRelated(id);
+                    ShowWebAplicationRelated(id);
+                }
+                else {
+                    TablesToAudit = new Array();
+                    toastr.error("An unexpected error has occurred.Please contact Ultimus Support.", "Ups!");
+                }
             }
-            else {
-                TablesToAudit = new Array();
-                toastr.error("An unexpected error has occurred.Please contact Ultimus Support.", "Ups!");
-            }
-        }
-    });
+        });
 
+    }
+    else {
+        toastr.warning("No se puede borrar, porque hay una relación existente.","Atención")
+    }
 
 
 };

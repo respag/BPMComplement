@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Data.OracleClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,26 +26,58 @@ namespace Ultimus.AuditManager.Admin.Controllers
             return View();
         }
 
-        public  bool ValidarConexion(string connstring)
+        //Método que verifica  si un conector es válido
+        public bool ValidarConexion(string connstring, string tipo)
         {
-            using (SqlConnection conn = new SqlConnection(connstring))
+            if (tipo == "Microsoft SQL Server")
+            {
+                using (SqlConnection conn = new SqlConnection(connstring))
+                {
+                    try
+                    {
+
+                        conn.Open();
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }
+
+            }
+            else
             {
                 try
                 {
-
-                    conn.Open();
-                    return true;
+                    using (OracleConnection conn = new OracleConnection(connstring))
+                    {
+                        try
+                        {
+                            conn.Open();
+                            return true;
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                        finally
+                        {
+                            conn.Close();
+                        }
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
                     return false;
                 }
-                finally
-                {
-                    conn.Close();
-                }
             }
         }
+
 
         public ActionResult Index()
         {
@@ -63,7 +96,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
 
             CatConnections Model = new CatConnections();
 
-            ViewBag.ConnectionsList = db.CatConnections.ToList();
+            ViewBag.ConnectionsList = db.CatConnections.OrderBy(c => c.ConnectionName).ToList();
             ViewBag.ConnectionTypesList = new SelectList(db.ConnectionTypes, "IdConnectionType", "ConnectionName"); 
 
             return View(Model);
@@ -110,7 +143,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
 
             Model = db.CatConnections.Find(id);
 
-            ViewBag.ConnectionsList = db.CatConnections.ToList();
+            ViewBag.ConnectionsList = db.CatConnections.OrderBy(c=>c.ConnectionName).ToList();
             ViewBag.ConnectionTypesList = new SelectList(db.ConnectionTypes, "IdConnectionType", "ConnectionName", Model.IdConnectionType);
 
             Model.toUpdate = true;
@@ -139,7 +172,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
                 Model.inUse = true;
             }
 
-            ViewBag.ConnectionsList = db.CatConnections.ToList();
+            ViewBag.ConnectionsList = db.CatConnections.OrderBy(c=>c.ConnectionName).ToList();
             ViewBag.ConnectionTypesList = new SelectList(db.ConnectionTypes, "IdConnectionType", "ConnectionName");
 
             return View("ConnectionConfiguration", Model);

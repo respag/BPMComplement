@@ -18,7 +18,7 @@ namespace Ultimus.AuditManager.Admin.Controllers
         public IEnumerable<CatWebAplications> GetAllWebAplications(int id)
         {
             IEnumerable<CatWebAplications> WebAplicationsList
-                = db.CatWebAplications.ToList();
+                = db.CatWebAplications.OrderBy(w=>w.WebAplicationName).ToList();
 
             IEnumerable<WebAplicationDetails> waDetailsList
                 = db.WebAplicationDetails.Where(d => d.IdProcess == id).ToList();
